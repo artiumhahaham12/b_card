@@ -1,0 +1,20 @@
+.Home{
+    color: black;
+    
+    .conteiner{
+        padding: 2rem 10rem;
+        img{
+            height: 250px;
+        }
+        .img{
+    object-fit: cover;
+}
+}
+    
+}
+@media(min-width:572px){
+    .Home{
+        padding: 0 30px;
+        
+    }
+}

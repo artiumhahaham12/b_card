@@ -1,4 +1,5 @@
 export interface Card {
+  length: any;
   _id: string;
   title: string;
   subtitle: string;

@@ -1,0 +1,10 @@
+.myNavbar{
+    display: flex;
+    justify-content: space-between;
+    width: 80vw;
+    div input{
+        width: 0;
+        height: 0;
+        opacity: 0;
+    }
+}
