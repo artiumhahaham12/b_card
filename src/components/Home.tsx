@@ -77,9 +77,10 @@ const Home: FunctionComponent<HomeProps> = () => {
       .then((res) => {
         setAllCards(res.data);
         let eight = [];
-        for (let i = 0; i < 8; i++){
-          eight.push(res.data[i])
-        }
+        
+        let start = (page - 1) * 8;
+        let end = start + 8;
+        eight = allCards.slice(start, end);
         setOnlyEight(eight);
       })
       .catch((error) => {
@@ -88,27 +89,41 @@ const Home: FunctionComponent<HomeProps> = () => {
   }, []);
   const searchChangeFunction = useContext(SearchContext);
   let [page, setPage] = useState<number>(1);
-  let changePage = (page:number) => {
-    setPage(page)
-  }
+  let changePage = (page: number) => {
+    setPage(page);
+  };
   useEffect(() => {
     console.log(page);
-    let ourEight = []
-    for (let i = (page - 1) * 8; i < (allCards.length/8 -1);i++){
-      ourEight.push(allCards[i])
-    }
+    let ourEight:any = [];
+    let start = (page-1) * 8;
+    let end = start + 8;
+    setOnlyEight(allCards.slice(start, end))
+
     console.log(ourEight);
-   
-  }, [page])
-  
+  }, [page]);
+  function pageMove(command: string) {
+    switch (command) {
+      case "right":
+        if (page < allCards.length / 8 - 1) setPage((page) => page ++);
+        break;
+      case "left":
+        if (page > 1) setPage((page) => page --);
+        break;
+      default:
+        break;
+    }
+  }
   return (
     <div className="">
       <MyNavbar />
-      <PaginationHomePage
-        pagesNumber={allCards.length}
-        setPage={changePage}
-        page={page}
-      />
+      {/* <PaginationHomePage pagesNumber={allCards.length} setPage={changePage} page={page}
+      /> */}{page}
+      <button className="" onClick={() => {pageMove("right")}}>
+        left
+      </button>
+      <button className="" onClick={() => {pageMove("left")}}>
+        right
+      </button>
       <div className="conteiner " style={{ padding: "2rem 10rem" }}>
         <div className="row">
           {onlyEight.length ? (
