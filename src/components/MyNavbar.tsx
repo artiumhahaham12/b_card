@@ -15,27 +15,14 @@ interface MyNavbarProps {
 }
 
 const MyNavbar: FunctionComponent<MyNavbarProps> = ({ allCards }) => {
-  let { Theme, setTheme } = useContext<Context>(ThemeContext);
+  let { theme, toggleTheme } = useContext<Context>(ThemeContext);
   let { user} = useContext(UserContext);
 
-  function changeTheme() {
-    if (Theme.color == "#000") {
-      setTheme({
-        color: "#fff",
-        backGroundColor: "#000",
-      });
-    } else {
-      setTheme({
-        color: "#000",
-        backGroundColor: "#fff",
-      });
-    }
-  }
+ 
   let navigator = useNavigate();
   const { search, changeSearch } = useContext<any>(SearchContext);
 
-  let body = document.getElementsByTagName("body");
-  body[0].style.backgroundColor = Theme.backGroundColor;
+  
 
   const searchForm = useFormik({
     initialValues: {
@@ -76,7 +63,7 @@ const MyNavbar: FunctionComponent<MyNavbarProps> = ({ allCards }) => {
                
                 <Nav.Link
                   onClick={() => {
-                    navigator("/");
+                    navigator("/about");
                   }}
                   className=" d-inline-block"
                 >
@@ -123,14 +110,15 @@ const MyNavbar: FunctionComponent<MyNavbarProps> = ({ allCards }) => {
               <button
                 className="border border-1 rounded-5"
                 style={{
-                  backgroundColor: `${Theme.backGroundColor}`,
                   padding: "10px",
                 }}
                 onClick={() => {
-                  changeTheme();
+                  toggleTheme();
+                  
+                  
                 }}
               >
-                {Theme.backGroundColor != "#000" ? (
+                {theme != "dark" ? (
                   <i
                     className="fa-solid fa-sun"
                     style={{ color: "yellow" }}

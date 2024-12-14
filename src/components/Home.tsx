@@ -102,7 +102,7 @@ const Home: FunctionComponent<HomeProps> = () => {
         break;
     }
   }
-  let { Theme } = useContext<Context>(ThemeContext);
+  let { theme } = useContext<Context>(ThemeContext);
   let { user, setUser } = useContext<Context>(UserContext);
   useEffect(() => {
     console.log(user);
@@ -117,7 +117,7 @@ const Home: FunctionComponent<HomeProps> = () => {
   }, []); 
   */
   return (
-    <div className={styles.Home} style={Theme}>
+    <div className={styles.Home} >
       <MyNavbar allCards={allCards} />
       {/* <PaginationHomePage pagesNumber={allCards.length} setPage={changePage} page={page}
       /> */}

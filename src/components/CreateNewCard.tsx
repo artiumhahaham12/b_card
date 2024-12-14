@@ -41,10 +41,7 @@ const CreateNewCard: FunctionComponent<CreateNewCardProps> = () => {
 
       url: yup
         .string()
-        .matches(
-          /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/,
-          "Enter a valid URL"
-        ),
+        .url(),
       alt: yup.string(),
 
       state: yup.string(),
@@ -55,7 +52,7 @@ const CreateNewCard: FunctionComponent<CreateNewCardProps> = () => {
       zip: yup.number(),
     }),
 
-    onSubmit: (values) => {
+    onSubmit: (values,{resetForm}) => {
       let values_new: Card = {
         title: values.title,
         subtitle: values.subtitle,
@@ -81,9 +78,13 @@ const CreateNewCard: FunctionComponent<CreateNewCardProps> = () => {
         .then((res) => {
           console.log(res.data);
           ToastRes("success", "Card added success", "light", 1500);
+          navigtor(-1)
         })
         .catch((error) => {
           console.log(error);
+          ToastRes("error", "oops something go wrong please try later", "light", 1500);
+          resetForm();
+
         });
     },
   });
@@ -240,7 +241,7 @@ const CreateNewCard: FunctionComponent<CreateNewCardProps> = () => {
                 type="text"
                 className="form-control"
                 id="url"
-                placeholder=""
+                placeholder="11"
                 
               ></input>
               <label htmlFor="url">Image url </label>

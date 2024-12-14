@@ -72,7 +72,7 @@ const MyCards: FunctionComponent<MyCardsProps> = () => {
                       {card.address.city} {card.address.country}
                     </p>
                   </div>
-                  <div className="card-footer d-flex justify-content-between">
+                  <div className="card-footer d-flex justify-content-evenly">
                     <button
                       className="btn btn-primary"
                       onClick={() => {

@@ -37,14 +37,14 @@ const MoreDatails: FunctionComponent<MoreDatailsProps> = () => {
 
           <h5 className="display-6">{card?.subtitle}</h5>
           <p>{card?.description}</p>
-          <p>{card?.description}</p>
+          
           <p>
             <span className="fw-bold">adress: </span>
             {card?.address.state && card?.address.state}
             {card?.address.country}, {card?.address.city} {card?.address.street}{" "}
             {card?.address.houseNumber}
           </p>
-          {card?.address.zip && (
+          {(card?.address.zip as number) != 0  && (
             <span className="fw-bold">Zip: {card?.address.zip} </span>
           )}
                 <span className="fw-bold">Phone: { card?.phone}</span>
