@@ -21,3 +21,6 @@ export function getUserById(id: string,token:any) {
     },
   });
 }
+export function getToken(){
+  return localStorage.getItem("token")
+}

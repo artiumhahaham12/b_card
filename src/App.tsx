@@ -11,6 +11,10 @@ import { setTheme } from "flowbite-react/dist/types/theme-store";
 import Login from "./components/Login";
 import FavCards from "./components/FavCard";
 import { jwtDecode } from "jwt-decode";
+import MyCards from "./components/MyCards";
+import CreateNewCard from "./components/CreateNewCard";
+import UpadateCard from "./components/UpadateCard";
+import MoreDatails from "./components/MoreDetails";
   
 
 
@@ -30,33 +34,36 @@ function App() {
     setSearch(title);
   }
   useEffect(() => {
-    let userId = jwtDecode(
-      (localStorage.getItem("token") as string) || ""
-    ) as any;
-    if (userId._id != undefined) {
-      setUser(userId);
+    if (localStorage.getItem("token") != null) {
+      let userId = jwtDecode(
+        (localStorage.getItem("token") as string) || ""
+      ) as any;
+      if (userId._id != undefined) {
+        setUser(userId);
+      }
     }
-  }, []);
-   
+    }, []);
+    
   return (
     <div>
-      <ThemeContext.Provider value={{Theme,setTheme}} >
-        <UserContext.Provider value={{user, setUser }} >
-          
-        
-      <Router>
-        
-        <SearchContext.Provider value={{ search, changeSearch }}>
-          <Routes>
-            <Route path="/" element={<Home />}></Route>
-            <Route path="/register" element={<Register />}></Route>
-            <Route path="/login" element={<Login />}></Route>
-            <Route path="/fav" element={<FavCards />}></Route>
-          </Routes>
-        </SearchContext.Provider>
-      <ToastContainer />
-      </Router>
-</UserContext.Provider>
+      <ThemeContext.Provider value={{ Theme, setTheme }}>
+        <UserContext.Provider value={{ user, setUser }}>
+          <Router>
+            <SearchContext.Provider value={{ search, changeSearch }}>
+              <Routes>
+                <Route path="/" element={<Home />}></Route>
+                <Route path="/register" element={<Register />}></Route>
+                <Route path="/login" element={<Login />}></Route>
+                <Route path="/fav" element={<FavCards />}></Route>
+                <Route path="/my-cards" element={<MyCards />}></Route>
+                <Route path="/add-Card" element={<CreateNewCard />}></Route>
+                <Route path="/update-Card/:id" element={<UpadateCard  />}></Route>
+                <Route path="/details/:id" element={<MoreDatails  />}></Route>
+              </Routes>
+            </SearchContext.Provider>
+            <ToastContainer />
+          </Router>
+        </UserContext.Provider>
       </ThemeContext.Provider>
     </div>
   );

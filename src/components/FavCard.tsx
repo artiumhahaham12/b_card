@@ -10,7 +10,7 @@ import { getAllCards, getCardById, patchLike } from "../services/cardsService";
 import { Card } from "../interfaces/Card";
 import { UserContext } from "../App";
 import { AxiosResponse } from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import MyNavbar from "./MyNavbar";
 import User from "../interfaces/User";
 import { JwtPayload } from "jwt-decode";
@@ -19,7 +19,7 @@ interface FavCardsProps {}
 
 const FavCards: FunctionComponent<FavCardsProps> = () => {
     let { user} = useContext(UserContext);
-
+  let navigator = useNavigate()
     let [changingOfCardsFlag, setChangingOfCardsFlag] = useState<boolean>(false);
   let [fav, setFav] = useState<Card[]>([]);
   useEffect(() => {
@@ -40,7 +40,7 @@ const FavCards: FunctionComponent<FavCardsProps> = () => {
   }, [changingOfCardsFlag,user]);
     function checkLike(card: Card) {
       if (
-        card.likes.find((likeId: string) => {
+        (card.likes || ["1111"]).find((likeId: string) => {
           return likeId == user._id;
         })
       ) {
@@ -58,7 +58,7 @@ const FavCards: FunctionComponent<FavCardsProps> = () => {
         <MyNavbar allCards={[]}/>
         <div className="container">
           <div className="row">
-            {fav.map((card) => {
+            {fav.map((card:Card) => {
               return (
                 <div
                   key={card._id}
@@ -84,9 +84,9 @@ const FavCards: FunctionComponent<FavCardsProps> = () => {
                     <div className="h-50">
                       <img
                         style={{ height: "300px" }}
-                        src={card.image.url}
+                        src={card.image.url as string}
                         className="card-img-top"
-                        alt={card.image.alt}
+                        alt={card.image.alt as string}
                       ></img>
                     </div>
                     <div className="card-body h-75">
@@ -99,13 +99,18 @@ const FavCards: FunctionComponent<FavCardsProps> = () => {
                         Address: {card.address.street}{" "}
                         {card.address.houseNumber}
                         {", "}
-                        {card.address.city} {card.address.coutry}
+                        {card.address.city} {card.address.country}
                       </p>
                     </div>
                     <div className="card-footer">
-                      <Link to="#" className="btn btn-primary">
+                      <button
+                        className="btn btn-primary"
+                        onClick={() => {
+                          navigator(`/details/${card._id}`);
+                        }}
+                      >
                         More Information
-                      </Link>
+                      </button>
                     </div>
                   </div>
                 </div>

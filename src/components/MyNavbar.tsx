@@ -1,8 +1,8 @@
 import { FunctionComponent, useContext } from "react";
-import { Container, Nav, Navbar, NavLink } from "react-bootstrap";
+import { Button, Container, Nav, Navbar, NavLink } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
-import { SearchContext, ThemeContext } from "../App";
+import { SearchContext, ThemeContext, UserContext } from "../App";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { Card } from "../interfaces/Card";
@@ -16,7 +16,7 @@ interface MyNavbarProps {
 
 const MyNavbar: FunctionComponent<MyNavbarProps> = ({ allCards }) => {
   let { Theme, setTheme } = useContext<Context>(ThemeContext);
-  console.log(theme);
+  let { user} = useContext(UserContext);
 
   function changeTheme() {
     if (Theme.color == "#000") {
@@ -73,14 +73,7 @@ const MyNavbar: FunctionComponent<MyNavbarProps> = ({ allCards }) => {
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className={styles.myNavbar}>
               <div className="">
-                <Nav.Link
-                  onClick={() => {
-                    navigator("/");
-                  }}
-                  className=" d-inline-block"
-                >
-                  Home
-                </Nav.Link>
+               
                 <Nav.Link
                   onClick={() => {
                     navigator("/");
@@ -97,6 +90,16 @@ const MyNavbar: FunctionComponent<MyNavbarProps> = ({ allCards }) => {
                 >
                   Favorites
                 </Nav.Link>
+                {user.isBusiness &&
+                <Nav.Link
+                  onClick={() => {
+                    navigator("/my-cards");
+                  }}
+                  className=" d-inline-block"
+                  >
+                  My Cards
+                </Nav.Link>
+                }
               </div>
               <form className="form d-flex " onSubmit={searchForm.handleSubmit}>
                 <input
@@ -116,6 +119,7 @@ const MyNavbar: FunctionComponent<MyNavbarProps> = ({ allCards }) => {
                   Search
                 </button>
               </form>
+
               <button
                 className="border border-1 rounded-5"
                 style={{

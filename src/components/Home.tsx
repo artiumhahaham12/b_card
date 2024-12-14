@@ -8,7 +8,7 @@ import {
 import MyNavbar from "./MyNavbar";
 import { getAllCards, patchLike } from "../services/cardsService";
 import { Card } from "../interfaces/Card";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { SearchContext, ThemeContext, UserContext } from "../App";
 import { error } from "console";
 import PaginationHomePage from "./PaginationHomePage";
@@ -22,6 +22,7 @@ import { Color } from "react-bootstrap/esm/types";
 interface HomeProps {}
 
 const Home: FunctionComponent<HomeProps> = () => {
+  let navigator = useNavigate()
   let [changingOfCardsFlag, setChangingOfCardsFlag] = useState<boolean>(false);
   function resetCards() {
     setChangingOfCardsFlag(!changingOfCardsFlag);
@@ -29,7 +30,7 @@ const Home: FunctionComponent<HomeProps> = () => {
 
   function checkLike(card: Card) {
     if (
-      card.likes.find((likeId: string) => {
+      (card.likes as string[]).find((likeId: string) => {
         return likeId == user._id;
       })
     ) {
@@ -86,12 +87,12 @@ const Home: FunctionComponent<HomeProps> = () => {
         if (page > 1) {
           setPage((page) => page - 1);
         } else {
-          setPage(Math.ceil(allCards.length / 8 - 1));
+          setPage(Math.ceil(allCards.length / 8 ));
         }
         break;
         break;
       case "left":
-        if (page < allCards.length / 8 - 1) {
+        if (page < allCards.length / 8 ) {
           setPage((page) => page + 1);
         } else {
           setPage(1);
@@ -186,13 +187,17 @@ const Home: FunctionComponent<HomeProps> = () => {
                           Address: {card.address.street}{" "}
                           {card.address.houseNumber}
                           {", "}
-                          {card.address.city} {card.address.coutry}
+                          {card.address.city} {card.address.country}
                         </p>
                       </div>
                       <div className="card-footer">
-                        <Link to="#" className="btn btn-primary">
+                        <button className="btn btn-primary" onClick={
+                          () => {
+                            navigator(`/details/${card._id}`);
+                          }
+                        }>
                           More Information
-                        </Link>
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -244,16 +249,21 @@ const Home: FunctionComponent<HomeProps> = () => {
                         Address: {card.address.street}{" "}
                         {card.address.houseNumber}
                         {", "}
-                        {card.address.city} {card.address.coutry}
+                        {card.address.city} {card.address.country}
                       </p>
                     </div>
                     <div className="card-footer">
-                      <Link to="#" className="btn btn-primary">
-                        More Information
-                      </Link>
+                       <button className="btn btn-primary" onClick={
+                          () => {
+                            navigator(`/details/${card._id}`);
+                          }
+                        }>
+                          More Information
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
+                
               );
             })
           )}
