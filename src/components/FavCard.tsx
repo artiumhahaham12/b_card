@@ -14,10 +14,12 @@ import { Link, useNavigate } from "react-router-dom";
 import MyNavbar from "./MyNavbar";
 import User from "../interfaces/User";
 import { JwtPayload } from "jwt-decode";
+import Sppiner from "./Sppiner";
 
 interface FavCardsProps {}
 
 const FavCards: FunctionComponent<FavCardsProps> = () => {
+  let [isLoading, setIsLoading] = useState(true);
     let { user} = useContext(UserContext);
   let navigator = useNavigate()
     let [changingOfCardsFlag, setChangingOfCardsFlag] = useState<boolean>(false);
@@ -36,6 +38,7 @@ const FavCards: FunctionComponent<FavCardsProps> = () => {
       }
 
       setFav(CardWithLike);
+      setIsLoading(false)
     });
   }, [changingOfCardsFlag,user]);
     function checkLike(card: Card) {
@@ -53,7 +56,7 @@ const FavCards: FunctionComponent<FavCardsProps> = () => {
     setChangingOfCardsFlag(!changingOfCardsFlag);
   }
 
-    return (
+    return !isLoading?(
       <>
         <MyNavbar allCards={[]}/>
         <div className="container">
@@ -119,6 +122,11 @@ const FavCards: FunctionComponent<FavCardsProps> = () => {
           </div>
         </div>
       </>
+    ) : (
+        <div className="">
+          <MyNavbar allCards={[]} />
+          <Sppiner/>
+        </div>
     );
 }
 

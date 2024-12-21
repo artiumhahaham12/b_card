@@ -1,10 +1,26 @@
 .myNavbar{
     display: flex;
     justify-content: space-between;
-    width: 80vw;
+    width: 70vw;
     div input{
         width: 0;
         height: 0;
         opacity: 0;
     }
 }
+.profile-img{
+    position: relative;
+}
+.hidden-profile{
+    display: none;
+
+}
+.profile-img:hover .hidden-profile{
+    display: block;
+    position: absolute;
+    z-index: 2;
+    padding: 5px;
+    background-color: rgba(0, 0, 0, 0.85);
+    color: white;
+}
+

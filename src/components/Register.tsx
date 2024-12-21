@@ -83,8 +83,7 @@ const Register: FunctionComponent<RegisterProps> = () => {
         };
         console.log(values_new);
         userRegister(values_new).then((res) => {
-            (console.log(res.data)
-            );
+            
             ToastRes("success", `you added successfuly ${values.first}`, `light`, 3000)
             navigtor("/")
         }).catch((error) => {
@@ -459,7 +458,7 @@ const Register: FunctionComponent<RegisterProps> = () => {
             type="submit"
             disabled={!formikRegister.dirty || !formikRegister.isValid}
           >
-            Sighn Up
+            Sign Up
           </button>
         </form>
       </div>

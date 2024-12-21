@@ -1,6 +1,7 @@
 import { boolean, number, string } from "yup";
 
 export default interface User {
+  isAdmin?: boolean;
   name: {
     first: string;
     middle: string;
@@ -10,8 +11,8 @@ export default interface User {
   email: string;
   password: string;
   image: {
-    url: string;
-    alt: string;
+    url?: string;
+    alt?: string;
   };
   address: {
     state: string;
@@ -22,4 +23,5 @@ export default interface User {
     zip: number;
   };
   isBusiness: boolean;
+  _id?: string;
 }

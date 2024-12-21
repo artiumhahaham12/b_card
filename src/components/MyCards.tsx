@@ -7,10 +7,12 @@ import { Card } from "../interfaces/Card";
 import { deleteCard, getAllCards } from "../services/cardsService";
 import { ToastRes } from "../services/toastService";
 import { error } from "console";
+import Sppiner from "./Sppiner";
 
 interface MyCardsProps {}
 
 const MyCards: FunctionComponent<MyCardsProps> = () => {
+  let [isLoading, setIsLoading] = useState(true);
   let navigator = useNavigate();
   let { user } = useContext(UserContext);
 
@@ -24,12 +26,15 @@ const MyCards: FunctionComponent<MyCardsProps> = () => {
         return card.user_id === user._id;
       });
       setMyCards(my);
+      if (user._id != undefined) {
+        setIsLoading(false)
+      }
     });
   }, [changingOfCardsFlag, user]);
   useEffect(() => {
     console.log(myCards);
   }, [myCards]);
-  return (
+  return !isLoading?(
     <>
       <MyNavbar allCards={[]} />
       <button
@@ -60,8 +65,8 @@ const MyCards: FunctionComponent<MyCardsProps> = () => {
                       alt={card.image.alt as string}
                     ></img>
                   </div>
-                  <div className="card-body h-75">
-                    <p className="card-text overflow-y-hidden">
+                  <div className="card-body overflow-hidden " style={{ height: "6rem" }}>
+                    <p className="card-text overflow-y-hidden" style={{height:"4rem"}}>
                       {card.description}
                     </p>
                     <p className="card-text">Phone: {card.phone}</p>
@@ -72,7 +77,7 @@ const MyCards: FunctionComponent<MyCardsProps> = () => {
                       {card.address.city} {card.address.country}
                     </p>
                   </div>
-                  <div className="card-footer d-flex justify-content-evenly">
+                  <div className="card-footer d-flex justify-content-evenly" >
                     <button
                       className="btn btn-primary"
                       onClick={() => {
@@ -123,6 +128,10 @@ const MyCards: FunctionComponent<MyCardsProps> = () => {
         </div>
       </div>
     </>
+  ) : (<>
+      <MyNavbar allCards={[]}/>
+      <Sppiner/>
+  </>
   );
 };
 

@@ -1,7 +1,7 @@
 import { Context, FunctionComponent, useContext, useEffect } from "react";
 import User from "../interfaces/User";
 import { useNavigate } from "react-router-dom";
-import { useFormik } from "formik";
+import { Formik, useFormik } from "formik";
 import * as yup from "yup";
 import { getUserById, userLogin } from "../services/usersService";
 import { ToastRes } from "../services/toastService";
@@ -34,7 +34,7 @@ const Login: FunctionComponent<LoginProps> = () => {
         console.log(values);
         const token = await userLogin(values);
         localStorage.setItem("token", token.data as string);
-        ToastRes("success", "Log in successful", "light", 3000);
+        
 
         let userId = jwtDecode(
           (localStorage.getItem("token") as string) || ""
@@ -43,7 +43,7 @@ const Login: FunctionComponent<LoginProps> = () => {
 
           
           
-        ToastRes("success", "User data loaded", "light", 3000);
+        ToastRes("success", "login success", "light", 3000);
         navigator("/");
       } catch (error) {
         console.log(error);
@@ -100,6 +100,7 @@ const Login: FunctionComponent<LoginProps> = () => {
           <div className="row">
             <div className="col-sm-12 col-md-6 my-sm-1">
               <button
+              type="button"
                 className="btn btn-outline-secondary w-100"
                 onClick={() => {
                   formikLogin.resetForm();
@@ -110,22 +111,27 @@ const Login: FunctionComponent<LoginProps> = () => {
             </div>
             <div className="col-sm-12 col-md-6 my-sm-1">
               <button
+                
+                type="button"
                 className="btn btn-danger w-100"
                 onClick={() => {
-                  navigator("/");
                   ToastRes("info", "log in was stopped", "light", 2000);
+                  navigator("/");
                 }}
               >
                 CANCEL
               </button>
             </div>
           </div>
+          <div className="row">
           <button
-            className="row btn btn-outline-primary mt-2 w-50 m-0 m-auto d-block "
-            type="submit"
+              className="row btn btn-outline-primary mt-2 w-50 m-0 m-auto d-block "
+              type="submit" disabled={ !formikLogin.dirty || !formikLogin.isValid}
           >
             Login
           </button>
+
+          </div>
         </form>
       </div>
     </>

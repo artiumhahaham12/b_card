@@ -8,7 +8,8 @@ import { getCardById, updateCard } from "../services/cardsService";
 import { error } from "console";
 interface UpadateCardProps {}
 
-const UpadateCard: FunctionComponent<UpadateCardProps> = ({}) => {
+const UpadateCard: FunctionComponent<UpadateCardProps> = () => {
+  
   let navigtor = useNavigate();
   let { id } = useParams();
   let [card, setCard] = useState<Card>({
@@ -32,16 +33,19 @@ const UpadateCard: FunctionComponent<UpadateCardProps> = ({}) => {
       zip: 0,
     },
   });
+  let [isLoading, setIsLoadin] = useState<boolean>(false);
+
   useEffect(() => {
     getCardById(id as string)
       .then((res) => {
         setCard(res.data);
+        setIsLoadin(true);
         console.log(res.data);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [id]);
   let formikUpdateCard = useFormik({
     initialValues: {
       title: card.title,
@@ -129,7 +133,7 @@ const UpadateCard: FunctionComponent<UpadateCardProps> = ({}) => {
         style={{ width: "100vw" }}
         onSubmit={formikUpdateCard.handleSubmit}
       >
-        <h2 className="d-block text-center ">Create New Card</h2>
+        <h2 className="d-block text-center ">Update Card</h2>
         <div className="row">
           <div className=" col-sm-12 col-md-6 my-sm-1">
             <div className="  form-floating my-1 w-100">
@@ -271,8 +275,8 @@ const UpadateCard: FunctionComponent<UpadateCardProps> = ({}) => {
                 name="url"
                 onChange={formikUpdateCard.handleChange}
                 onBlur={formikUpdateCard.handleBlur}
-                value={formikUpdateCard.values.url}
-                type="text"
+                value={formikUpdateCard.values.url as string}
+                type="url"
                 className="form-control"
                 id="url"
                 placeholder=""
@@ -412,6 +416,7 @@ const UpadateCard: FunctionComponent<UpadateCardProps> = ({}) => {
                 name="houseNumber"
                 onChange={formikUpdateCard.handleChange}
                 onBlur={formikUpdateCard.handleBlur}
+                value={formikUpdateCard.values.houseNumber}
                 defaultValue={""}
                 type="number"
                 className="form-control"
@@ -435,6 +440,7 @@ const UpadateCard: FunctionComponent<UpadateCardProps> = ({}) => {
                 name="zip"
                 onChange={formikUpdateCard.handleChange}
                 onBlur={formikUpdateCard.handleBlur}
+                value={formikUpdateCard.values.zip}
                 defaultValue={""}
                 type="number"
                 className="form-control"
@@ -482,7 +488,7 @@ const UpadateCard: FunctionComponent<UpadateCardProps> = ({}) => {
           type="submit"
           disabled={!formikUpdateCard.dirty || !formikUpdateCard.isValid}
         >
-          Create
+          Update
         </button>
       </form>
     </div>

@@ -16,6 +16,10 @@ import CreateNewCard from "./components/CreateNewCard";
 import UpadateCard from "./components/UpadateCard";
 import MoreDatails from "./components/MoreDetails";
 import About from "./components/About";
+import Sandbox from "./components/Sanbox";
+import UpdateUser from "./components/UpdateUser";
+import Sppiner from "./components/Sppiner";
+import MyNavbar from "./components/MyNavbar";
   
 
 
@@ -58,6 +62,7 @@ function App() {
         <UserContext.Provider value={{ user, setUser }}>
           <Router>
             <SearchContext.Provider value={{ search, changeSearch }}>
+              
               <Routes>
                 <Route path="/" element={<Home />}></Route>
                 <Route path="/About" element={<About />}></Route>
@@ -65,6 +70,12 @@ function App() {
                 <Route path="/login" element={<Login />}></Route>
                 <Route path="/fav" element={<FavCards />}></Route>
                 <Route path="/my-cards" element={<MyCards />}></Route>
+                <Route path="/sandbox" element={<Sandbox />}></Route>
+                <Route path="/sppiner" element={<Sppiner />}></Route>
+                <Route
+                  path="/update-user/:id"
+                  element={<UpdateUser />}
+                ></Route>
                 <Route path="/add-Card" element={<CreateNewCard />}></Route>
                 <Route
                   path="/update-Card/:id"

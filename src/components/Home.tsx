@@ -18,11 +18,13 @@ import { jwtDecode } from "jwt-decode";
 import { isCallLikeExpression } from "typescript";
 import { string } from "yup";
 import { Color } from "react-bootstrap/esm/types";
+import Sppiner from "./Sppiner";
 
 interface HomeProps {}
 
 const Home: FunctionComponent<HomeProps> = () => {
-  let navigator = useNavigate()
+  let [isLoading, setIsLoading] = useState(true);
+  let navigator = useNavigate();
   let [changingOfCardsFlag, setChangingOfCardsFlag] = useState<boolean>(false);
   function resetCards() {
     setChangingOfCardsFlag(!changingOfCardsFlag);
@@ -34,7 +36,7 @@ const Home: FunctionComponent<HomeProps> = () => {
         return likeId == user._id;
       })
     ) {
-      return <i className="fa-solid fa-heart text-danger"> </i>;
+      return <i className="fa-solid fa-heart text-danger "> </i>;
     } else {
       return <i className="fa-regular fa-heart "> </i>;
     }
@@ -46,6 +48,7 @@ const Home: FunctionComponent<HomeProps> = () => {
     getAllCards()
       .then((res) => {
         setAllCards(res.data);
+        setIsLoading(false);
         let eight = [];
 
         /* let start = (page - 1) * 8;
@@ -87,12 +90,12 @@ const Home: FunctionComponent<HomeProps> = () => {
         if (page > 1) {
           setPage((page) => page - 1);
         } else {
-          setPage(Math.ceil(allCards.length / 8 ));
+          setPage(Math.ceil(allCards.length / 8));
         }
         break;
         break;
       case "left":
-        if (page < allCards.length / 8 ) {
+        if (page < allCards.length / 8) {
           setPage((page) => page + 1);
         } else {
           setPage(1);
@@ -116,13 +119,13 @@ const Home: FunctionComponent<HomeProps> = () => {
     }
   }, []); 
   */
-  return (
-    <div className={styles.Home} >
+  return !isLoading ? (
+    <div className={styles.Home}>
       <MyNavbar allCards={allCards} />
       {/* <PaginationHomePage pagesNumber={allCards.length} setPage={changePage} page={page}
       /> */}
       {!search.length && (
-        <div className=" position-fixed bottom-0 z-3 bg-white d-flex text-center w-100 justify-content-center">
+        <div className=" position-fixed bottom-0 z-3 d-flex text-center w-100 justify-content-center">
           <button
             className="fa-sharp fa-solid fa-arrow-left  border-0 fs-3"
             style={{ background: "0" }}
@@ -156,19 +159,7 @@ const Home: FunctionComponent<HomeProps> = () => {
                     <div className="card" style={{ height: "40rem" }}>
                       <div className="card-header">{card.title}</div>
                       {/*like function */}
-                      {
-                        <button
-                          onClick={(e) => {
-                            patchLike(card).then((res) => {
-                              console.log(res.data);
-
-                              resetCards();
-                            });
-                          }}
-                        >
-                          {checkLike(card)}
-                        </button>
-                      }
+                      {}
                       <div className="h-50">
                         <img
                           style={{ height: "300px" }}
@@ -177,8 +168,14 @@ const Home: FunctionComponent<HomeProps> = () => {
                           alt={card.image.alt}
                         ></img>
                       </div>
-                      <div className="card-body h-75">
-                        <p className="card-text overflow-y-hidden">
+                      <div
+                        className="card-body overflow-hidden "
+                        style={{ height: "5rem" }}
+                      >
+                        <p
+                          className="card-text overflow-y-hidden"
+                          style={{ height: "3rem" }}
+                        >
                           {card.description}
                         </p>
                         <p className="card-text">Phone: {card.phone}</p>
@@ -190,14 +187,30 @@ const Home: FunctionComponent<HomeProps> = () => {
                           {card.address.city} {card.address.country}
                         </p>
                       </div>
-                      <div className="card-footer">
-                        <button className="btn btn-primary" onClick={
-                          () => {
+                      <div className="card-footer d-flex justify-content-between">
+                        <div
+                          className="btn btn-primary"
+                          onClick={() => {
                             navigator(`/details/${card._id}`);
-                          }
-                        }>
+                          }}
+                        >
                           More Information
-                        </button>
+                        </div>
+
+                        <span
+                          className={styles["like border-0 d-block fs-4 btn"]}
+                          
+                          onClick={(e) => {
+
+                            patchLike(card).then((res) => {
+                              console.log(res.data);
+
+                              resetCards();
+                            });
+                          }}
+                        >
+                          {checkLike(card)}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -239,8 +252,14 @@ const Home: FunctionComponent<HomeProps> = () => {
                         alt={card.image.alt}
                       ></img>
                     </div>
-                    <div className="card-body h-75">
-                      <p className="card-text overflow-y-hidden">
+                    <div
+                      className="card-body overflow-hidden "
+                      style={{ height: "5rem" }}
+                    >
+                      <p
+                        className="card-text overflow-y-hidden"
+                        style={{ height: "3rem" }}
+                      >
                         {card.description}
                       </p>
                       <p className="card-text">Phone: {card.phone}</p>
@@ -253,22 +272,27 @@ const Home: FunctionComponent<HomeProps> = () => {
                       </p>
                     </div>
                     <div className="card-footer">
-                       <button className="btn btn-primary" onClick={
-                          () => {
-                            navigator(`/details/${card._id}`);
-                          }
-                        }>
-                          More Information
-                        </button>
-                      </div>
+                      <button
+                        className="btn btn-primary"
+                        onClick={() => {
+                          navigator(`/details/${card._id}`);
+                        }}
+                      >
+                        More Information
+                      </button>
                     </div>
                   </div>
-                
+                </div>
               );
             })
           )}
         </div>
       </div>
+    </div>
+  ) : (
+    <div>
+      <MyNavbar allCards={[]} />
+      <Sppiner />
     </div>
   );
 };

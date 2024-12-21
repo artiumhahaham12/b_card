@@ -24,7 +24,8 @@ const About: FunctionComponent<AboutProps> = () => {
           ></img>
         </div>
         <div className="d-flex flex-column m-0  mt-5 vw-100 align-items-center ">
-          <h2 className="display-1">Bcard</h2>
+                <h2 className="display-1">Bcard</h2>
+                <p>find some one to your needs</p>
         </div>
       </div>
     );
