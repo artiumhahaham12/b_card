@@ -81,11 +81,11 @@ const Register: FunctionComponent<RegisterProps> = () => {
         },
         isBusiness: values.isBusiness,
         };
-        console.log(values_new);
+
         userRegister(values_new).then((res) => {
             
             ToastRes("success", `you added successfuly ${values.first}`, `light`, 3000)
-            navigtor("/")
+            navigtor("/login")
         }).catch((error) => {
             let errorLog: string = (Object.entries(error)[5][1] as any).data as string;
             ToastRes(
@@ -432,6 +432,7 @@ const Register: FunctionComponent<RegisterProps> = () => {
           <div className="row">
             <div className="col-sm-12 col-md-6 my-sm-1">
               <button
+                type="button"
                 className="btn btn-outline-secondary w-100"
                 onClick={() => {
                   formikRegister.resetForm();
@@ -442,6 +443,7 @@ const Register: FunctionComponent<RegisterProps> = () => {
             </div>
             <div className="col-sm-12 col-md-6 my-sm-1">
               <button
+                type="button"
                 className="btn btn-danger w-100"
                 onClick={() => {
                   navigtor("/");

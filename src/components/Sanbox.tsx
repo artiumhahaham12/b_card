@@ -34,7 +34,7 @@ const Sandbox: FunctionComponent<SandboxProps> = () => {
     let navigator = useNavigate();
     useEffect(() =>{
         getAllUsers().then((res) => {
-            console.log(res.data);
+         
           setUsers(res.data);
           setIsLoading(false);
           
@@ -42,7 +42,7 @@ const Sandbox: FunctionComponent<SandboxProps> = () => {
     }, [usersFlag])
 
     function findUserByDetails() {
-      console.log("in");
+   
 
       if (seachTXT != "") {
         let finds = users.filter((user) => {
@@ -97,7 +97,7 @@ const Sandbox: FunctionComponent<SandboxProps> = () => {
 
     return (
       <>
-        <MyNavbar allCards={[]} />
+        <MyNavbar allCards={[]} isHome={false} />
         {!isLoading ? (
           <>
             <button

@@ -20,7 +20,7 @@ const MyCards: FunctionComponent<MyCardsProps> = () => {
   let [myCards, setMyCards] = useState<Card[]>([]);
   useEffect(() => {
     getAllCards().then((res: AxiosResponse) => {
-      console.log(user._id);
+      
       let my: Card[];
       my = res.data.filter((card: Card) => {
         return card.user_id === user._id;
@@ -32,11 +32,11 @@ const MyCards: FunctionComponent<MyCardsProps> = () => {
     });
   }, [changingOfCardsFlag, user]);
   useEffect(() => {
-    console.log(myCards);
+    
   }, [myCards]);
   return !isLoading?(
     <>
-      <MyNavbar allCards={[]} />
+      <MyNavbar allCards={[]} isHome={false} />
       <button
         className="btn btn-success m-0 m-auto d-block my-2"
         onClick={() => {
@@ -48,7 +48,7 @@ const MyCards: FunctionComponent<MyCardsProps> = () => {
       <div className="container">
         <div className="row">
           {myCards.map((card: Card) => {
-            console.log("Image URL:", card.image.url);
+            
             return (
               <div
                 key={card._id}
@@ -65,8 +65,14 @@ const MyCards: FunctionComponent<MyCardsProps> = () => {
                       alt={card.image.alt as string}
                     ></img>
                   </div>
-                  <div className="card-body overflow-hidden " style={{ height: "6rem" }}>
-                    <p className="card-text overflow-y-hidden" style={{height:"4rem"}}>
+                  <div
+                    className="card-body overflow-hidden "
+                    style={{ height: "6rem" }}
+                  >
+                    <p
+                      className="card-text overflow-y-hidden"
+                      style={{ height: "4rem" }}
+                    >
                       {card.description}
                     </p>
                     <p className="card-text">Phone: {card.phone}</p>
@@ -77,7 +83,7 @@ const MyCards: FunctionComponent<MyCardsProps> = () => {
                       {card.address.city} {card.address.country}
                     </p>
                   </div>
-                  <div className="card-footer d-flex justify-content-evenly" >
+                  <div className="card-footer d-flex justify-content-evenly">
                     <button
                       className="btn btn-primary"
                       onClick={() => {
@@ -106,7 +112,7 @@ const MyCards: FunctionComponent<MyCardsProps> = () => {
                               "light",
                               1500
                             );
-                            console.log(res.data);
+                            setChangingOfCardsFlag(!changingOfCardsFlag);
                           })
                           .catch((error) => {
                             ToastRes(
@@ -129,7 +135,7 @@ const MyCards: FunctionComponent<MyCardsProps> = () => {
       </div>
     </>
   ) : (<>
-      <MyNavbar allCards={[]}/>
+      <MyNavbar allCards={[]} isHome={false}/>
       <Sppiner/>
   </>
   );

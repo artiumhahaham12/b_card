@@ -33,39 +33,48 @@ const UpadateCard: FunctionComponent<UpadateCardProps> = () => {
       zip: 0,
     },
   });
-  let [isLoading, setIsLoadin] = useState<boolean>(false);
+  let [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
+    if (!id) {
+      ToastRes("error", "Invalid card ID!", "light", 2000);
+      navigtor("/");
+      return;
+    }
+    
+    
     getCardById(id as string)
       .then((res) => {
         setCard(res.data);
-        setIsLoadin(true);
-        console.log(res.data);
+        setIsLoading(false);
       })
-      .catch((error) => {
-        console.log(error);
+      .catch((err) => {
+        console.error("Error fetching card:", err);
+        ToastRes("error", "Failed to fetch card data.", "light", 2000);
+        setIsLoading(false);
       });
   }, [id]);
   let formikUpdateCard = useFormik({
     initialValues: {
-      title: card.title,
-      subtitle: card.subtitle,
-      description: card.description,
-      phone: card.phone,
-      email: card.email,
-      web: card.web,
+      title: card.title || "",
+      subtitle: card.subtitle || "",
+      description: card.description || "",
+      phone: card.phone || "",
+      email: card.email || "",
+      web: card.web || "",
 
-      url: card.image.url,
-      alt: card.image.alt,
+      url: card.image.url || "",
+      alt: card.image.alt || "",
 
-      state: card.address.state,
-      country: card.address.country,
-      city: card.address.city,
-      street: card.address.street,
-      houseNumber: card.address.houseNumber,
-      zip: card.address.zip,
+      state: card.address.state || "",
+      country: card.address.country || "",
+      city: card.address.city || "",
+      street: card.address.street || "",
+      houseNumber: card.address.houseNumber || 0,
+      zip: card.address.zip || 0,
     },
     enableReinitialize: true,
+    
     validationSchema: yup.object({
       title: yup.string().required(),
       subtitle: yup.string().required(),
@@ -79,9 +88,8 @@ const UpadateCard: FunctionComponent<UpadateCardProps> = () => {
 
       url: yup
         .string()
-        .matches(
-          /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/,
-          "Enter a valid URL"
+        .url(
+          "Please enter a valid URL. For example: https://www.example.com"
         ),
       alt: yup.string(),
 
@@ -94,16 +102,19 @@ const UpadateCard: FunctionComponent<UpadateCardProps> = () => {
     }),
 
     onSubmit: (values) => {
-      let values_new = {
+    
+      
+      const updatedCard = {
         title: values.title,
         subtitle: values.subtitle,
         description: values.description,
         phone: values.phone,
         email: values.email,
-        web: values.web,
+        web: values.web
+        ,
         image: {
           url: values.url,
-          alt: values.alt,
+          alt: values.alt
         },
         address: {
           state: values.state,
@@ -114,15 +125,20 @@ const UpadateCard: FunctionComponent<UpadateCardProps> = () => {
           zip: values.zip,
         },
       };
-      console.log(values_new);
-      updateCard(values_new, id as string)
-        .then((res) => {
-          console.log(res.data);
-          ToastRes("success", "Card updated success", "light", 1500);
+      updateCard(updatedCard, id as string)
+        .then(() => {
+          ToastRes("success", "Card updated successfully!", "light", 1500);
           navigtor("/my-Cards");
         })
-        .catch((error) => {
-          console.log(error);
+        .catch((err) => {
+          console.error("Error updating card:", err);
+          ToastRes(
+  
+            "error",
+            "Failed to update card. Please try again.",
+            "light",
+            2000
+          );
         });
     },
   });
@@ -417,7 +433,7 @@ const UpadateCard: FunctionComponent<UpadateCardProps> = () => {
                 onChange={formikUpdateCard.handleChange}
                 onBlur={formikUpdateCard.handleBlur}
                 value={formikUpdateCard.values.houseNumber}
-                defaultValue={""}
+                
                 type="number"
                 className="form-control"
                 id="houseNumber"
@@ -441,7 +457,7 @@ const UpadateCard: FunctionComponent<UpadateCardProps> = () => {
                 onChange={formikUpdateCard.handleChange}
                 onBlur={formikUpdateCard.handleBlur}
                 value={formikUpdateCard.values.zip}
-                defaultValue={""}
+                
                 type="number"
                 className="form-control"
                 id="zip"
@@ -462,6 +478,7 @@ const UpadateCard: FunctionComponent<UpadateCardProps> = () => {
         <div className="row">
           <div className="col-sm-12 col-md-6 my-sm-1">
             <button
+              type="button"
               className="btn btn-outline-secondary w-100"
               onClick={() => {
                 formikUpdateCard.resetForm();
@@ -472,10 +489,11 @@ const UpadateCard: FunctionComponent<UpadateCardProps> = () => {
           </div>
           <div className="col-sm-12 col-md-6 my-sm-1">
             <button
+              type="button"
               className="btn btn-danger w-100"
               onClick={() => {
                 navigtor("/");
-                ToastRes("error", "all data was canceled!", "light", 2000);
+                ToastRes("info", "update was stop!", "light", 2500);
               }}
             >
               CANCEL

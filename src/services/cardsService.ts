@@ -42,6 +42,7 @@ export function craeteNewCard(card: any) {
 }
 export function updateCard(card: any, id: string) {
   let token: string = getToken() as string;
+  console.log([card, id]);
   return axios.put(`${api}/${id}`, card, {
     headers: {
       "x-auth-token": token,

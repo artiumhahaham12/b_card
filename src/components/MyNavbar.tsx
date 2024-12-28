@@ -15,9 +15,10 @@ import { getToken, getUserById } from "../services/usersService";
 import { jwtDecode } from "jwt-decode";
 interface MyNavbarProps {
   allCards: Array<Card>;
+  isHome:boolean;
 }
 
-const MyNavbar: FunctionComponent<MyNavbarProps> = ({ allCards }) => {
+const MyNavbar: FunctionComponent<MyNavbarProps> = ({ allCards ,isHome}) => {
   let { theme, toggleTheme } = useContext<Context>(ThemeContext);
   let { user, setUser } = useContext(UserContext);
   let [navUser, setNavUser] = useState<User>({_id:""} as User);
@@ -25,23 +26,19 @@ const MyNavbar: FunctionComponent<MyNavbarProps> = ({ allCards }) => {
   let navigator = useNavigate();
   const { search, changeSearch } = useContext<any>(SearchContext);
   useEffect(() => {
-    console.log(user._id);
+    
     if (getToken() != null) {
       
       getUserById((jwtDecode(getToken() ?? "")as any)._id as string).then((res) => {
         setNavUser(res.data);
-        console.log(res.data);
+        
         
       }).catch((error) => {
         console.log(error);
       })
     }
   }, [user]);
-  useEffect(() => {
-    console.log(navUser);
-    
-  },[navUser])
-
+ 
   const searchForm = useFormik({
     initialValues: {
       search: "",
@@ -86,6 +83,8 @@ const MyNavbar: FunctionComponent<MyNavbarProps> = ({ allCards }) => {
                 >
                   About
                 </Nav.Link>
+                {!getToken() && (
+                
                 <Nav.Link
                   onClick={() => {
                     navigator("/fav");
@@ -94,6 +93,7 @@ const MyNavbar: FunctionComponent<MyNavbarProps> = ({ allCards }) => {
                 >
                   Favorites
                 </Nav.Link>
+              )}
                 {user.isBusiness && (
                   <Nav.Link
                     onClick={() => {
@@ -115,7 +115,8 @@ const MyNavbar: FunctionComponent<MyNavbarProps> = ({ allCards }) => {
                   </Nav.Link>
                 )}
               </div>
-              <form className="form d-flex " onSubmit={searchForm.handleSubmit}>
+
+              {isHome &&<form className="form d-flex " onSubmit={searchForm.handleSubmit}>
                 <input
                   className="form-control "
                   type="search"
@@ -132,7 +133,7 @@ const MyNavbar: FunctionComponent<MyNavbarProps> = ({ allCards }) => {
                 <button className="btn btn-outline-success" type="submit">
                   Search
                 </button>
-              </form>
+              </form>}
 
               {!getToken() && (
                 <Nav.Link
@@ -158,21 +159,50 @@ const MyNavbar: FunctionComponent<MyNavbarProps> = ({ allCards }) => {
                 {getToken() != null && (navUser._id as string) != "" && (
                   <>
                     <div className={styles["profile-img"]}>
-                      {navUser.image.url != "" ? (
+                      {navUser.image.url||"" != "" ? (
                         <img
                           style={{
                             width: "45px",
                             height: "45px",
                             borderRadius: "50%",
+
+                            
                           }}
-                          src={navUser.image.url || ""}
-                          alt={navUser.image.alt || ""}
+                          src={navUser.image.url }
+                          alt={navUser.image.alt} 
+                          
                         />
                       ) : (
-                        <>
-                          <i className="fa-solid fa-user"></i>
-                        </>
+                       
+                          <i className="fa-solid fa-user" style={{
+                            width: "45px",
+                            height: "45px",
+                            borderRadius: "50%",
+                          }}></i>
+                        
                       )}
+                        <div
+                          className={`${styles["hidden-profile"]} m-md-0 mx-md-5 m-2`}
+                        >
+                          <p>
+                            {navUser.name.first} {navUser.name.last}
+                          </p>
+                          <p>{navUser.email}</p>
+                          {user.isAdmin && <p>{"Admin"}</p>}
+                          {user.isBusiness && <p>{"Business"}</p>}
+                          <hr className="text-light" />
+                          <button
+                            className="btn btn-warning w-100"
+                            onClick={() => {
+                              localStorage.removeItem("token");
+                              navigator("/login");
+  
+                              setUser({ _id: "" });
+                            }}
+                          >
+                            logout
+                          </button>
+                        </div>
                       <button
                         className="border border-1 rounded-5 m-md-0 mx-md-5 m-2"
                         style={{
@@ -195,28 +225,6 @@ const MyNavbar: FunctionComponent<MyNavbarProps> = ({ allCards }) => {
                           ></i>
                         )}
                       </button>
-                      <div
-                        className={`${styles["hidden-profile"]} m-md-0 mx-md-5 m-2`}
-                      >
-                        <p>
-                          {navUser.name.first} {navUser.name.last}
-                        </p>
-                        <p>{navUser.email}</p>
-                        {user.isAdmin && <p>{"Admin"}</p>}
-                        {user.isBusiness && <p>{"Business"}</p>}
-                        <hr className="text-light" />
-                        <button
-                          className="btn btn-warning"
-                          onClick={() => {
-                            localStorage.removeItem("token");
-                            navigator("/login");
-
-                            setUser({ _id: "" });
-                          }}
-                        >
-                          logout
-                        </button>
-                      </div>
                     </div>
                   </>
                 )}

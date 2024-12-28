@@ -31,7 +31,7 @@ const Login: FunctionComponent<LoginProps> = () => {
     }),
     onSubmit: async (values, { resetForm }) => {
       try {
-        console.log(values);
+        
         const token = await userLogin(values);
         localStorage.setItem("token", token.data as string);
         
@@ -46,7 +46,7 @@ const Login: FunctionComponent<LoginProps> = () => {
         ToastRes("success", "login success", "light", 3000);
         navigator("/");
       } catch (error) {
-        console.log(error);
+        
         ToastRes("error", "Log in failed", "light", 3000);
       }
     },

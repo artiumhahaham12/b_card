@@ -73,10 +73,10 @@ const CreateNewCard: FunctionComponent<CreateNewCardProps> = () => {
           zip: values.zip,
         },
       };
-      console.log(values_new);
+      
       craeteNewCard(values_new)
         .then((res) => {
-          console.log(res.data);
+
           ToastRes("success", "Card added success", "light", 1500);
           navigtor(-1)
         })

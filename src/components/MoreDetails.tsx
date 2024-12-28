@@ -14,7 +14,7 @@ const MoreDatails: FunctionComponent<MoreDatailsProps> = () => {
     useEffect(() => {
         getCardById(id as string).then((res) => {
             setCard(res.data)
-            console.log(res.data);
+           
             
         }) 
     },[])

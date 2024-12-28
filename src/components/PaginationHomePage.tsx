@@ -23,7 +23,7 @@ const PaginationHomePage: FunctionComponent<PaginationHomePageProps> = ({
   let [items, setItems] = useState<any>([]);
   let [itemsFlagChange, setItemsFlagChange] = useState<boolean>(false);
   useEffect(() => {
-    console.log(localPage);
+    
 
     doPagintionItemsArray();
 
@@ -85,16 +85,14 @@ const PaginationHomePage: FunctionComponent<PaginationHomePageProps> = ({
   }
   function clickButton(clickedPage: number) {
     setClickedPage(clickedPage);
-    console.log(localPage + " " + "local");
+    
   }
   async function setClickedPage(clickedPage: number) {
     setPage(() => clickedPage);
     await setLocalPage(clickedPage);
   }
 
-  useEffect(() => {
-    console.log(items);
-  }, [items]);
+ 
   return (
     <div className="w-100 d-flex">
       <Pagination

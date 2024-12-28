@@ -15,7 +15,7 @@ import MyNavbar from "./MyNavbar";
 import User from "../interfaces/User";
 import { JwtPayload } from "jwt-decode";
 import Sppiner from "./Sppiner";
-
+import styles from "../Css/Home.module.css"
 interface FavCardsProps {}
 
 const FavCards: FunctionComponent<FavCardsProps> = () => {
@@ -26,8 +26,7 @@ const FavCards: FunctionComponent<FavCardsProps> = () => {
   let [fav, setFav] = useState<Card[]>([]);
   useEffect(() => {
     getAllCards().then((res: AxiosResponse) => {
-      console.log(user._id);
-
+     
       let CardWithLike: any = [];
       for (let card of res.data) {
         for (let like of card.likes) {
@@ -58,7 +57,7 @@ const FavCards: FunctionComponent<FavCardsProps> = () => {
 
     return !isLoading?(
       <>
-        <MyNavbar allCards={[]}/>
+        <MyNavbar allCards={[]} isHome={false}/>
         <div className="container">
           <div className="row">
             {fav.map((card:Card) => {
@@ -70,20 +69,7 @@ const FavCards: FunctionComponent<FavCardsProps> = () => {
                 >
                   <div className="card" style={{ height: "40rem" }}>
                     <div className="card-header">{card.title}</div>
-                    {/*like function */}
-                    {
-                      <button
-                        onClick={(e) => {
-                          patchLike(card).then((res) => {
-                            console.log(res.data);
 
-                            resetCards();
-                          });
-                        }}
-                      >
-                        {checkLike(card)}
-                      </button>
-                    }
                     <div className="h-50">
                       <img
                         style={{ height: "300px" }}
@@ -105,7 +91,7 @@ const FavCards: FunctionComponent<FavCardsProps> = () => {
                         {card.address.city} {card.address.country}
                       </p>
                     </div>
-                    <div className="card-footer">
+                    <div className="card-footer d-flex justify-content-between">
                       <button
                         className="btn btn-primary"
                         onClick={() => {
@@ -114,6 +100,17 @@ const FavCards: FunctionComponent<FavCardsProps> = () => {
                       >
                         More Information
                       </button>
+                      <span
+                        className={styles["like border-0 d-block fs-4 btn"]}
+                        onClick={(e) => {
+                          patchLike(card).then((res) => {
+                          
+                            resetCards();
+                          });
+                        }}
+                      >
+                        {checkLike(card)}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -124,7 +121,7 @@ const FavCards: FunctionComponent<FavCardsProps> = () => {
       </>
     ) : (
         <div className="">
-          <MyNavbar allCards={[]} />
+          <MyNavbar allCards={[]} isHome={false} />
           <Sppiner/>
         </div>
     );
