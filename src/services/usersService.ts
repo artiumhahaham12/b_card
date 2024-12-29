@@ -14,7 +14,7 @@ export function userLogin(enterDetails: any) {
 export function getUserById(id: string) {
   
   let token = getToken()
-  console.log(4);
+  
   
   return axios.get(`${api}/${id}`, {
     headers: {

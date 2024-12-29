@@ -85,10 +85,10 @@ const UpdateUser: FunctionComponent<UpdateUserProps> = () => {
         },
         
       };
-      console.log(values_new);
+      
       updateUser((userToUpdate as User)._id as string,values_new)
         .then((res:AxiosResponse) => {
-          console.log(res.data);
+          
           ToastRes(
             "success",
             `user updated success successfuly ${values.first}`,

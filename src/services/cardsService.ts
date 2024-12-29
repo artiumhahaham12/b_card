@@ -15,7 +15,7 @@ export function patchLike(card: Card) {
     console.error("token is missing");
     return Promise.reject(new Error("Token is missing."));
   }
-  console.log([token, card, `${api}/${card._id}`]);
+  
 
   return axios.patch(
     `${api}/${card._id}`,
@@ -28,7 +28,7 @@ export function patchLike(card: Card) {
   );
 }
 export function getCardById(card_id: string) {
-  console.log(`${api}/${card_id}`);
+ 
 
   return axios.get(`${api}/${card_id}`);
 }
@@ -42,7 +42,7 @@ export function craeteNewCard(card: any) {
 }
 export function updateCard(card: any, id: string) {
   let token: string = getToken() as string;
-  console.log([card, id]);
+  
   return axios.put(`${api}/${id}`, card, {
     headers: {
       "x-auth-token": token,
