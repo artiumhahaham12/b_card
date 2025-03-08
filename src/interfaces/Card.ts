@@ -1,5 +1,7 @@
 export interface Card {
-  _id: string;
+
+  
+  _id?: string;
   title: string;
   subtitle: string;
   description: string;
@@ -7,23 +9,23 @@ export interface Card {
   email: string;
   web: string;
   image: {
-    url: string;
-    alt: string;
-    _id: string;
+    url?: string;
+    alt?: string;
+    _id?: string;
   };
   address: {
-    state: string;
-    coutry: string;
+    state?: string;
+    country: string;
     city: string;
     street: string;
     houseNumber: number;
-    zip: number;
-    _id: string;
+    zip?: number;
+    _id?: string;
   };
-  bizNumber: number;
-  likes: string[];
+  bizNumber?: number;
+  likes?: string[];
 
-  user_id: string;
-  createdAt: string;
-  __v: number;
+  user_id?: string;
+  createdAt?: string;
+  __v?: number;
 }

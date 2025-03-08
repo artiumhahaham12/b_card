@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -10,15 +11,23 @@
     "@types/node": "^16.18.120",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
+    "@types/react-infinite-scroll-component": "^4.2.5",
     "axios": "^1.7.8",
     "bootstrap": "^5.3.3",
+    "flowbite": "^2.5.2",
+    "flowbite-react": "^0.10.2",
     "formik": "^2.4.6",
     "jwt-decode": "^4.0.0",
+    "npm": "^11.0.0",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.6",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^7.0.1",
+    "react-infinite-scroll-component": "^6.1.0",
+    "react-router-dom": "^7.0.2",
     "react-scripts": "5.0.1",
+    "react-toastify": "^10.0.6",
+    "sweetalert": "^2.1.2",
+    "typeface-heebo": "^1.1.13",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4",
     "yup": "^1.4.0"
@@ -46,5 +55,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "css-loader": "^7.1.2",
+    "postcss-loader": "^8.1.1",
+    "source-map-loader": "^5.0.0"
   }
 }
