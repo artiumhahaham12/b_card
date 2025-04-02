@@ -3,7 +3,7 @@
 .env.* 
 
 # Logs
-logs/
+server/logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
