@@ -5,6 +5,7 @@ import { Card } from "../interfaces/Card";
 import { getToken } from "./usersService";
 
 const api = `${process.env.REACT_APP_API}/cards`;
+console.log(api);
 
 export function getAllCards() {
   return axios.get(api);
@@ -22,7 +23,7 @@ export function patchLike(card: Card) {
     {},
     {
       headers: {
-        "x-auth-token": token,
+        "Authorization": token,
       },
     }
   );
@@ -36,7 +37,7 @@ export function craeteNewCard(card: any) {
   let token: string = getToken() as string;
   return axios.post(api, card, {
     headers: {
-      "x-auth-token": token,
+      "Authorization": token,
     },
   });
 }
@@ -45,7 +46,7 @@ export function updateCard(card: any, id: string) {
   
   return axios.put(`${api}/${id}`, card, {
     headers: {
-      "x-auth-token": token,
+      "Authorization": token,
     },
   });
 }
@@ -54,11 +55,20 @@ export function deleteCard(card: any, id: string) {
   let token: string = getToken() as string;
    return axios.delete(`${api}/${id}`, {
     headers: {
-      "x-auth-token": token,
+      "Authorization": token,
     },
     data: {
       bizNumber, 
     },
   });
 
+}
+export function getMyCards(){
+  let token: string = getToken() as string;
+  return axios.get(`${api}/my-cards`, {
+    headers: {
+      "Authorization": token,
+    },
+    
+  });
 }

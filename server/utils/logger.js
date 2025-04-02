@@ -7,7 +7,7 @@ const logger = createLogger({
     new transports.File({
       level: "error",
       filename: `logs/${new Date().toLocaleDateString().replace(/\//g, ".")}.log`,
-      format: format.combine(format.timestamp(), format.json()),
+      format: format.combine(format.timestamp({format:new Date().toLocaleString()}), format.json()),
     }),
   ],
 });

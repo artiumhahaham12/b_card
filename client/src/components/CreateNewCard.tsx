@@ -82,7 +82,7 @@ const CreateNewCard: FunctionComponent<CreateNewCardProps> = () => {
         })
         .catch((error) => {
           console.log(error);
-          ToastRes("error", "oops something go wrong please try later", "light", 1500);
+          ToastRes("error", `${error.response.data}`, "light", 3000);
           resetForm();
 
         });

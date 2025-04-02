@@ -31,8 +31,6 @@ const MyNavbar: FunctionComponent<MyNavbarProps> = ({ allCards ,isHome}) => {
       
       getUserById((jwtDecode(getToken() ?? "")as any)._id as string).then((res) => {
         setNavUser(res.data);
-        
-        
       }).catch((error) => {
         console.log(error);
       })

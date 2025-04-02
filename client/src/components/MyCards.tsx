@@ -4,7 +4,7 @@ import MyNavbar from "./MyNavbar";
 import { Link, useNavigate } from "react-router-dom";
 import { AxiosResponse } from "axios";
 import { Card } from "../interfaces/Card";
-import { deleteCard, getAllCards } from "../services/cardsService";
+import { deleteCard, getAllCards, getMyCards } from "../services/cardsService";
 import { ToastRes } from "../services/toastService";
 import { error } from "console";
 import Sppiner from "./Sppiner";
@@ -19,16 +19,9 @@ const MyCards: FunctionComponent<MyCardsProps> = () => {
   let [changingOfCardsFlag, setChangingOfCardsFlag] = useState<boolean>(false);
   let [myCards, setMyCards] = useState<Card[]>([]);
   useEffect(() => {
-    getAllCards().then((res: AxiosResponse) => {
+    getMyCards().then((res) => {setMyCards(res.data);setIsLoading(false)}).catch((error)=>{
+      console.log(error);
       
-      let my: Card[];
-      my = res.data.filter((card: Card) => {
-        return card.user_id === user._id;
-      });
-      setMyCards(my);
-      if (user._id != undefined) {
-        setIsLoading(false)
-      }
     });
   }, [changingOfCardsFlag, user]);
   useEffect(() => {

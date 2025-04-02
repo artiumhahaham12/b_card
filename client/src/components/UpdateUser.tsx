@@ -98,11 +98,7 @@ const UpdateUser: FunctionComponent<UpdateUserProps> = () => {
           navigtor("/sandbox");
         })
         .catch((error) => {
-          let errorLog: string = (Object.entries(error)[5][1] as any)
-            .data as string;
-            ToastRes("error", errorLog, `light`, 3000);
-            console.log(errorLog);
-            
+            ToastRes("error", `${error.response.data}`, "light", 3000);
         });
     },
   });

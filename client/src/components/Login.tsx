@@ -31,27 +31,21 @@ const Login: FunctionComponent<LoginProps> = () => {
     }),
     onSubmit: async (values, { resetForm }) => {
       try {
-        
         const token = await userLogin(values);
         localStorage.setItem("token", token.data as string);
-        
 
         let userId = jwtDecode(
           (localStorage.getItem("token") as string) || ""
         ) as any;
-          setUser(userId);
+        setUser(userId);
 
-          
-          
         ToastRes("success", "login success", "light", 3000);
         navigator("/");
-      } catch (error) {
-        
-        ToastRes("error", "Log in failed", "light", 3000);
+      } catch (error: any) {
+        ToastRes("error", `${error.response.data}`, "light", 3000);
       }
     },
   });
-   
 
   return (
     <>
@@ -100,7 +94,7 @@ const Login: FunctionComponent<LoginProps> = () => {
           <div className="row">
             <div className="col-sm-12 col-md-6 my-sm-1">
               <button
-              type="button"
+                type="button"
                 className="btn btn-outline-secondary w-100"
                 onClick={() => {
                   formikLogin.resetForm();
@@ -111,7 +105,6 @@ const Login: FunctionComponent<LoginProps> = () => {
             </div>
             <div className="col-sm-12 col-md-6 my-sm-1">
               <button
-                
                 type="button"
                 className="btn btn-danger w-100"
                 onClick={() => {
@@ -124,13 +117,13 @@ const Login: FunctionComponent<LoginProps> = () => {
             </div>
           </div>
           <div className="row">
-          <button
+            <button
               className="row btn btn-outline-primary mt-2 w-50 m-0 m-auto d-block "
-              type="submit" disabled={ !formikLogin.dirty || !formikLogin.isValid}
-          >
-            Login
-          </button>
-
+              type="submit"
+              disabled={!formikLogin.dirty || !formikLogin.isValid}
+            >
+              Login
+            </button>
           </div>
         </form>
       </div>

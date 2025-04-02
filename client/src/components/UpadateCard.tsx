@@ -48,9 +48,8 @@ const UpadateCard: FunctionComponent<UpadateCardProps> = () => {
         setCard(res.data);
         setIsLoading(false);
       })
-      .catch((err) => {
-        console.error("Error fetching card:", err);
-        ToastRes("error", "Failed to fetch card data.", "light", 2000);
+      .catch((error) => {
+        ToastRes("error", `${error.response.data}`, "light", 3000);
         setIsLoading(false);
       });
   }, [id]);

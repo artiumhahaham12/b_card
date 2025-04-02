@@ -87,15 +87,7 @@ const Register: FunctionComponent<RegisterProps> = () => {
             ToastRes("success", `you added successfuly ${values.first}`, `light`, 3000)
             navigtor("/login")
         }).catch((error) => {
-            let errorLog: string = (Object.entries(error)[5][1] as any).data as string;
-            ToastRes(
-                "error",
-                errorLog,
-              `light`,
-              3000
-            );
-
-
+          ToastRes("error", `${error.response.data}`, "light", 3000);
         })
       },
     

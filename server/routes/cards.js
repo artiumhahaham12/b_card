@@ -39,12 +39,14 @@ const cardSchema = Joi.object({
     houseNumber: Joi.number(),
     zip: Joi.number(),
   },
-  bizNumber: Joi.number().required(),
+  bizNumber: Joi.number(),
   user_id: Joi.string(),
 });
 //add card
 router.post("/", auth, async (req, res, next) => {
   try {
+    console.log(req.auth);
+    
     if (!req.auth.isBusiness) return res.status(400).send("user not Business");
     req.body = {
       ...req.body,
@@ -65,8 +67,17 @@ router.get("/", async (req, res) => {
   try {
     const cards = await Card.find(
       {},
-      { createdAt: 0, user_id: 0, likes: 0, _id: 0, __v: 0 }
+      { createdAt: 0, user_id: 0, _id: 0, __v: 0 }
     );
+    res.status(200).send(cards);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
+//my cards
+router.get("/my-cards", auth, async (req, res) => {
+  try {
+    const cards = await Card.find({ user_id: req.auth._id });
     res.status(200).send(cards);
   } catch (error) {
     res.status(400).send(error);
@@ -77,15 +88,6 @@ router.get("/:id", async (req, res) => {
   try {
     const card = await Card.findById(req.params.id);
     res.status(200).send(card);
-  } catch (error) {
-    res.status(400).send(error);
-  }
-});
-//my cards
-router.get("/my-cards", auth, async (req, res) => {
-  try {
-    const cards = await Card.find({ user_id: req.auth._id });
-    res.status(200).send(cards);
   } catch (error) {
     res.status(400).send(error);
   }
