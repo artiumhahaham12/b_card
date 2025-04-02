@@ -1,0 +1,5 @@
+{"level":"error","message":"error 400: POST - inccorect email or password","timestamp":"2025-04-02T06:28:34.967Z"}
+{"level":"error","message":"error 400: POST - inccorect email or password","timestamp":"2025-04-02T06:30:09.764Z"}
+{"level":"error","message":"error 400: POST - inccorect email or password","timestamp":"2025-04-02T06:30:37.913Z"}
+{"level":"error","message":"error 400: POST - more then 3 tries last 24h access had been blocked","timestamp":"2025-04-02T06:30:46.822Z"}
+{"level":"error","message":"error 400: POST - inccorect email or password","timestamp":"2025-04-02T06:32:31.203Z"}
