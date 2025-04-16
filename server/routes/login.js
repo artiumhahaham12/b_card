@@ -17,7 +17,6 @@ function followTries(logging) {
   for (const times of logging.time) {
     if (times.getTime() >= past24Hours) {
       lastTries.push(times);
-      console.log(times);
     }
   }
   if (lastTries.length >= 3) {
@@ -33,26 +32,27 @@ router.post("/", async (req, res) => {
     if (error) return res.status(400).send(error.details[0].message);
     let user = await User.findOne({ email: req.body.email });
     if (!user) return res.status(400).send("inccorect email or password");
-    if(followTries(user.logging)) return res.status(400).send("more then 3 tries last 24h access had been blocked")
-      const result = await bcrypt.compare(req.body.password, user.password);
-    console.log(result);
-    
-    if (!result)  {
+    if (followTries(user.logging))
+      return res
+        .status(400)
+        .send("more then 3 tries last 24h access had been blocked");
+    const result = await bcrypt.compare(req.body.password, user.password);
+
+    if (!result) {
       user.logging.time.push(new Date());
       user.logging.block = followTries(user.logging);
       await user.save();
       return res.status(400).send("inccorect email or password");
+    } else {
+      user.logging.time = [];
+      user.block = false;
+      const token = jwt.sign(
+        { _id: user._id, isBusiness: user.isBusiness, isAdmin: user.isAdmin },
+        process.env.JWTKEY
+      );
+      await user.save();
+      res.status(200).send(token);
     }
-else{
-  user.logging.time = [];
-  user.block  = false;
-  const token = jwt.sign(
-    { _id: user._id, isBusiness: user.isBusiness, isAdmin: user.isAdmin },
-    process.env.JWTKEY
-  );
-  await user.save();
-  res.status(200).send(token);
-}
   } catch (error) {
     res.status(400).send(error);
   }

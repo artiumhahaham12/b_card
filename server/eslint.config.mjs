@@ -13,8 +13,14 @@ export default defineConfig([
   },
   {
     rules: {
-      "no-unused-vars": "warn",
-      "semi": "warn",
+      "no-debugger": "error",
+      "no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
+      "react/prop-types": "off",
+      "react/react-in-jsx-scope": "off", 
+      "no-empty": "error",
+      "no-unreachable": "error",
+      "no-commented-out-code": "off",
+      "semi": "error",
     },
   },
 ]);

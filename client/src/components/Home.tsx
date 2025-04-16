@@ -106,15 +106,7 @@ const Home: FunctionComponent<HomeProps> = () => {
   let { theme } = useContext<Context>(ThemeContext);
   let { user, setUser } = useContext<Context>(UserContext);
 
-  /* useEffect(() => {
-    let userId = jwtDecode(
-      (localStorage.getItem("token") as string) || ""
-    ) as any;
-    if (userId._id != undefined) {
-      setUser(userId);
-    }
-  }, []); 
-  */
+  
   return !isLoading ? (
     <div className={styles.Home}>
       <MyNavbar allCards={allCards} isHome={true} />
@@ -271,6 +263,8 @@ const Home: FunctionComponent<HomeProps> = () => {
                           >
                             More Information
                           </button>
+                          {localStorage.token&&(
+
                           <span
                             className={styles["like border-0 d-block fs-4 btn"]}
                             onClick={(e) => {
@@ -281,6 +275,7 @@ const Home: FunctionComponent<HomeProps> = () => {
                           >
                             {checkLike(card)}
                           </span>
+                          )}
                         </div>
                       </div>
                     </div>

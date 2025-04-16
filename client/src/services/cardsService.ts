@@ -29,8 +29,6 @@ export function patchLike(card: Card) {
   );
 }
 export function getCardById(card_id: string) {
- 
-
   return axios.get(`${api}/${card_id}`);
 }
 export function craeteNewCard(card: any) {

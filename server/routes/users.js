@@ -29,7 +29,7 @@ const usersSchema = Joi.object({
     url: Joi.string().allow("").uri().optional(),
   },
   address: {
-    state: Joi.string(),
+    state: Joi.string().allow(""),
     country: Joi.string().required(),
     city: Joi.string().required(),
     street: Joi.string().required(),
@@ -37,6 +37,31 @@ const usersSchema = Joi.object({
     zip: Joi.number(),
   },
   isBusiness: Joi.boolean().required(),
+});
+
+const usersUpdateSchema = Joi.object({
+  name: {
+    first: Joi.string().min(2).required(),
+    middle: Joi.string().allow("").optional(),
+    last: Joi.string().min(2).required(),
+  },
+  phone: Joi.string().regex(
+    /^(?:\+972|0)(?:[2-9]\d{7,8}|5[02458]\d{7})$/,
+    "Not valid isreal phone number!"
+  ),
+
+  image: {
+    alt: Joi.string().allow("").optional(),
+    url: Joi.string().allow("").uri().optional(),
+  },
+  address: {
+    state: Joi.string().allow(""),
+    country: Joi.string().required(),
+    city: Joi.string().required(),
+    street: Joi.string().required(),
+    houseNumber: Joi.number(),
+    zip: Joi.number(),
+  },
 });
 //register
 router.post("/", async (req, res) => {
@@ -53,7 +78,20 @@ router.post("/", async (req, res) => {
       { _id: user._id, isBusiness: user.isBusiness },
       process.env.JWTKEY
     );
-    res.status(201).send({token,user:_.pick(user,["name","isBusiness","phone","email","password","adress","image"])});
+    res
+      .status(201)
+      .send({
+        token,
+        user: _.pick(user, [
+          "name",
+          "isBusiness",
+          "phone",
+          "email",
+          "password",
+          "adress",
+          "image",
+        ]),
+      });
   } catch (error) {
     res.status(400).send(error);
   }
@@ -61,13 +99,12 @@ router.post("/", async (req, res) => {
 //get user by id
 router.get("/:id", auth, async (req, res) => {
   try {
-    
     if (!(req.auth.isAdmin || req.auth._id == req.params.id))
       return res.status(400).send("user not allowed");
     const user = await User.findById(req.params.id, {
       isAdmin: 0,
       password: 0,
-      _id: 0,
+      _id: 1,
     });
     res.status(200).send(user);
   } catch (error) {
@@ -87,10 +124,10 @@ router.get("/", auth, async (req, res) => {
 //update user details
 router.put("/:id", auth, async (req, res) => {
   try {
-    const { error } = usersSchema.validate(req.body);
+    const { error } = usersUpdateSchema.validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
     //email unique checking
-    let user = await User.findOne({ email: req.body.email });
+    let user = await User.findById(req.params.id);
     //update
     if (user)
       return res.status(200).send("email already exists for other user");
@@ -127,6 +164,5 @@ router.patch("/:id", auth, async (req, res) => {
     res.status(400).send(error);
   }
 });
-
 
 module.exports = router;

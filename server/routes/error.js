@@ -43,8 +43,7 @@ app.get('/server-error', (req, res) => {
   res.status(500).send('Ошибка сервера');
 });
 
-// Глобальный обработчик ошибок
-app.use((err, req, res, next) => {
+app.use((err, res, ) => {
   logger.error(`Ошибка ${err.statusCode || 500}: ${err.message}`);
   res.status(err.statusCode || 500).json({ error: err.message || 'Внутренняя ошибка сервера' });
 });

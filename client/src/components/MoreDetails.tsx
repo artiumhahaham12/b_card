@@ -12,6 +12,7 @@ const MoreDatails: FunctionComponent<MoreDatailsProps> = () => {
     let [card, setCard] = useState<Card>();
     let navigator = useNavigate()
     useEffect(() => {
+      
         getCardById(id as string).then((res) => {
             setCard(res.data)
            

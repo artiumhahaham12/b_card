@@ -10,7 +10,6 @@ async function getUnqueBizNumber() {
     let result = await Card.aggregate([
       { $group: { _id: null, maxBizNumber: { $max: "$bizNumber" } } },
     ]);
-    console.log(result);
 
     return result[0].maxBizNumber + 1 || 1000;
   } catch (error) {
@@ -28,8 +27,8 @@ const cardSchema = Joi.object({
   email: Joi.string().email().required(),
   web: Joi.string().uri().required(),
   image: {
-    url: Joi.string().uri(),
-    alt: Joi.string(),
+    url: Joi.string().uri().optional(),
+    alt: Joi.string().optional(),
   },
   address: {
     state: Joi.string(),
@@ -45,7 +44,6 @@ const cardSchema = Joi.object({
 //add card
 router.post("/", auth, async (req, res, next) => {
   try {
-    console.log(req.auth);
     
     if (!req.auth.isBusiness) return res.status(400).send("user not Business");
     req.body = {
@@ -67,7 +65,7 @@ router.get("/", async (req, res) => {
   try {
     const cards = await Card.find(
       {},
-      { createdAt: 0, user_id: 0, _id: 0, __v: 0 }
+      { createdAt: 0, user_id: 0, __v: 0 }
     );
     res.status(200).send(cards);
   } catch (error) {
@@ -98,7 +96,7 @@ router.put("/:id", auth, async (req, res) => {
     const { error } = cardSchema.validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
     let card = await Card.findById(req.params.id);
-    if (!(req.auth._id === card.user_id))
+    if (!(req.auth._id === card.user_id || req.auth.isAdmin == true))
       return res.status(400).send("not allowed");
     card = await Card.updateOne(
       { _id: req.params.id },
